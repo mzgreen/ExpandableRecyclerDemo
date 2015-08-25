@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import pl.michalz.expandablerecyclerdemo.adapter.DrawerItemChild;
-import pl.michalz.expandablerecyclerdemo.adapter.DrawerItemParent;
+import pl.michalz.expandablerecyclerdemo.adapter.ExpandableItemChild;
+import pl.michalz.expandablerecyclerdemo.adapter.ExpandableItemParent;
 import pl.michalz.expandablerecyclerdemo.adapter.ExpandableAdapter;
 
 import java.util.ArrayList;
@@ -34,24 +34,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ExpandableAdapter expandableDrawerAdapter = new ExpandableAdapter(listItems);
+        ExpandableAdapter expandableAdapter = new ExpandableAdapter(listItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(expandableDrawerAdapter);
+        recyclerView.setAdapter(expandableAdapter);
     }
 
     private void generateListObjects() {
         listItems = new ArrayList<>();
         for(int i=0;i<20;i++) {
-            DrawerItemParent drawerItemParent = new DrawerItemParent("Parent title "+i);
+            ExpandableItemParent expandableItemParent = new ExpandableItemParent("Parent title "+i);
             List<Object> childObjects = new ArrayList<>();
             if(i%2==0) {
                 for (int j = 0; j < 2; j++) {
-                    DrawerItemChild drawerItemChild = new DrawerItemChild("Child title " + j);
-                    childObjects.add(drawerItemChild);
+                    ExpandableItemChild expandableItemChild = new ExpandableItemChild("Child title " + j);
+                    childObjects.add(expandableItemChild);
                 }
             }
-            drawerItemParent.setChildObjectList(childObjects);
-            listItems.add(drawerItemParent);
+            expandableItemParent.setChildObjectList(childObjects);
+            listItems.add(expandableItemParent);
         }
     }
 

@@ -30,58 +30,58 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public DrawerItemParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drawer_item_parent, parent, false);
-        return DrawerItemParentViewHolder.newInstance(view);
+    public ExpandableItemParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_item_parent, parent, false);
+        return ExpandableItemParentViewHolder.newInstance(view);
     }
 
-    public DrawerItemChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drawer_item_child, parent, false);
-        return DrawerItemChildViewHolder.newInstance(view);
+    public ExpandableItemChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_item_child, parent, false);
+        return ExpandableItemChildViewHolder.newInstance(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(this.itemsList.get(position) instanceof DrawerItemParent) {
-            DrawerItemParentViewHolder parentViewHolder = (DrawerItemParentViewHolder)holder;
+        if(this.itemsList.get(position) instanceof ExpandableItemParent) {
+            ExpandableItemParentViewHolder parentViewHolder = (ExpandableItemParentViewHolder)holder;
             this.onBindParentViewHolder(parentViewHolder, position, this.itemsList.get(position));
         } else {
             if(this.itemsList.get(position) == null) {
                 throw new IllegalStateException("Incorrect ViewHolder found");
             }
-            DrawerItemChildViewHolder childViewHolder = (DrawerItemChildViewHolder)holder;
+            ExpandableItemChildViewHolder childViewHolder = (ExpandableItemChildViewHolder)holder;
             this.onBindChildViewHolder(childViewHolder, position, this.itemsList.get(position));
         }
 
     }
 
-    public void onBindParentViewHolder(DrawerItemParentViewHolder drawerItemParentViewHolder, int position, Object drawerItem) {
-        final DrawerItemParent drawerItemParent = (DrawerItemParent) drawerItem;
-        drawerItemParentViewHolder.setParentText(drawerItemParent.getTitle());
-        drawerItemParentViewHolder.setExpandButtonGone(drawerItemParent.getChildObjectList().isEmpty());
+    public void onBindParentViewHolder(ExpandableItemParentViewHolder expandableItemParentViewHolder, int position, Object expandableItem) {
+        final ExpandableItemParent expandableItemParent = (ExpandableItemParent) expandableItem;
+        expandableItemParentViewHolder.setParentText(expandableItemParent.getTitle());
+        expandableItemParentViewHolder.setExpandButtonGone(expandableItemParent.getChildObjectList().isEmpty());
         //Omitted arrow animation for simplicity
-        drawerItemParentViewHolder.setExpandClickListener(new View.OnClickListener() {
+        expandableItemParentViewHolder.setExpandClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(drawerItemParent.isExpanded()) {
-                    int count = drawerItemParent.getChildObjectList().size();
-                    itemsList.removeAll(drawerItemParent.getChildObjectList());
-                    int index = itemsList.indexOf(drawerItemParent);
+                if(expandableItemParent.isExpanded()) {
+                    int count = expandableItemParent.getChildObjectList().size();
+                    itemsList.removeAll(expandableItemParent.getChildObjectList());
+                    int index = itemsList.indexOf(expandableItemParent);
                     notifyItemRangeRemoved(index+1, count);
                 } else {
-                    List<Object> children = drawerItemParent.getChildObjectList();
-                    int index = itemsList.indexOf(drawerItemParent);
+                    List<Object> children = expandableItemParent.getChildObjectList();
+                    int index = itemsList.indexOf(expandableItemParent);
                     itemsList.addAll(index + 1, children);
                     notifyItemRangeInserted(index + 1, children.size());
                 }
-                drawerItemParent.setExpanded(!drawerItemParent.isExpanded());
+                expandableItemParent.setExpanded(!expandableItemParent.isExpanded());
             }
         });
     }
 
-    public void onBindChildViewHolder(DrawerItemChildViewHolder drawerItemParentViewHolder, int position, Object drawerItem) {
-        DrawerItemChild drawerItemChild = (DrawerItemChild) drawerItem;
-        drawerItemParentViewHolder.setChildText(drawerItemChild.getTitle());
+    public void onBindChildViewHolder(ExpandableItemChildViewHolder expandableItemParentViewHolder, int position, Object expandableItem) {
+        ExpandableItemChild expandableItemChild = (ExpandableItemChild) expandableItem;
+        expandableItemParentViewHolder.setChildText(expandableItemChild.getTitle());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        if(this.itemsList.get(position) instanceof DrawerItemParent) {
+        if(this.itemsList.get(position) instanceof ExpandableItemParent) {
             return VIEW_TYPE_PARENT;
         } else if(this.itemsList.get(position) == null) {
             throw new IllegalStateException("Null object added");

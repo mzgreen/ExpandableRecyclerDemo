@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //I was to lazy to implement parcelable :P
+        //I was too lazy to implement parcelable :P
         Object object = getLastCustomNonConfigurationInstance();
         if(object!=null) {
             listItems = (ArrayList<Object>) object;
